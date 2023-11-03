@@ -25,11 +25,11 @@ Ubuntu
 
 如果使用的是Vscode并且手动g++运行可以忽略此步。如使用VS，工作目录务必设置为$(RemoteDeployDir)，因为VS默认会跑到/bin/X64/里寻找文件，与我们项目本身的根目录资源文件位置/assets不符。
 
-![image-20231103123910309](https://wqby-1304194722.cos.ap-nanjing.myqcloud.com/img/image-20231103123910309.png)
+![](https://wqby-1304194722.cos.ap-nanjing.myqcloud.com/img/image-20231103123910309.png)
 
 使用VS还需要添加库依赖项pthread
 
-![image-20231103224437459](https://wqby-1304194722.cos.ap-nanjing.myqcloud.com/img/image-20231103224437459.png)
+![](https://wqby-1304194722.cos.ap-nanjing.myqcloud.com/img/image-20231103224437459.png)
 
 ## 运行项目
 
@@ -56,5 +56,5 @@ int main() {
 
 ![](https://wqby-1304194722.cos.ap-nanjing.myqcloud.com/img/image-20231103125259806.png)
 
-![image-20231103125214572](https://wqby-1304194722.cos.ap-nanjing.myqcloud.com/img/image-20231103125214572.png)
+![](https://wqby-1304194722.cos.ap-nanjing.myqcloud.com/img/image-20231103125214572.png)
 
