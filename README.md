@@ -28,7 +28,7 @@ Ubuntu
 
 使用VS还需要添加库依赖项pthread
 
-![image-20231103125950105](https://wqby-1304194722.cos.ap-nanjing.myqcloud.com/img/image-20231103125950105.png)
+![image-20231103224437459](https://wqby-1304194722.cos.ap-nanjing.myqcloud.com/img/image-20231103224437459.png)
 
 ## 运行项目
 
