@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ShowAllFiles>true</ShowAllFiles>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <RemoteDebuggerWorkingDirectory>$(RemoteDeployDir)</RemoteDebuggerWorkingDirectory>
+    <DebuggerFlavor>LinuxDebugger</DebuggerFlavor>
+    <RemoteDebuggingTarget>59725443;192.168.106.133 (username=, port=22, authentication=Password)</RemoteDebuggingTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <RemoteDebuggerWorkingDirectory>$(RemoteDeployDir)</RemoteDebuggerWorkingDirectory>
+    <DebuggerFlavor>LinuxDebugger</DebuggerFlavor>
+    <RemoteDebuggingTarget>59725443;192.168.106.133 (username=, port=22, authentication=Password)</RemoteDebuggingTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <RemoteDebuggerWorkingDirectory>$(RemoteDeployDir)</RemoteDebuggerWorkingDirectory>
+    <DebuggerFlavor>LinuxDebugger</DebuggerFlavor>
+    <RemoteDebuggingTarget>59725443;192.168.106.133 (username=, port=22, authentication=Password)</RemoteDebuggingTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <RemoteDebuggerWorkingDirectory>$(RemoteDeployDir)</RemoteDebuggerWorkingDirectory>
+    <DebuggerFlavor>LinuxDebugger</DebuggerFlavor>
+    <RemoteDebuggingTarget>59725443;192.168.106.133 (username=, port=22, authentication=Password)</RemoteDebuggingTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <RemoteDebuggerWorkingDirectory>$(RemoteDeployDir)</RemoteDebuggerWorkingDirectory>
+    <DebuggerFlavor>LinuxDebugger</DebuggerFlavor>
+    <RemoteDebuggingTarget>59725443;192.168.106.133 (username=, port=22, authentication=Password)</RemoteDebuggingTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <RemoteDebuggerWorkingDirectory>$(RemoteDeployDir)</RemoteDebuggerWorkingDirectory>
+    <DebuggerFlavor>LinuxDebugger</DebuggerFlavor>
+    <RemoteDebuggingTarget>59725443;192.168.106.133 (username=, port=22, authentication=Password)</RemoteDebuggingTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <RemoteDebuggerWorkingDirectory>$(RemoteDeployDir)</RemoteDebuggerWorkingDirectory>
+    <DebuggerFlavor>LinuxDebugger</DebuggerFlavor>
+    <RemoteDebuggingTarget>59725443;192.168.106.133 (username=, port=22, authentication=Password)</RemoteDebuggingTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <RemoteDebuggerWorkingDirectory>$(RemoteDeployDir)</RemoteDebuggerWorkingDirectory>
+    <DebuggerFlavor>LinuxDebugger</DebuggerFlavor>
+    <RemoteDebuggingTarget>59725443;192.168.106.133 (username=, port=22, authentication=Password)</RemoteDebuggingTarget>
+  </PropertyGroup>
+</Project>
