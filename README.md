@@ -24,13 +24,10 @@ Ubuntu
 依赖：g++、pthread、openssh-server
 
 如果使用的是Vscode并且手动g++运行可以忽略此步。如使用VS，工作目录务必设置为$(RemoteDeployDir)，因为VS默认会跑到/bin/X64/里寻找文件，与我们项目本身的根目录资源文件位置/assets不符。
-
-![](https://wqby-1304194722.cos.ap-nanjing.myqcloud.com/img/image-20231103123910309.png)
+<img src="https://wqby-1304194722.cos.ap-nanjing.myqcloud.com/img/image-20231103123910309.png" alt="图片描述">
 
 使用VS还需要添加库依赖项pthread
-
-![](https://wqby-1304194722.cos.ap-nanjing.myqcloud.com/img/image-20231103224437459.png)
-
+<img src="https://wqby-1304194722.cos.ap-nanjing.myqcloud.com/img/image-20231103224437459.png" alt="图片描述">
 ## 运行项目
 
 ```c++
@@ -54,7 +51,7 @@ int main() {
 
 ## 效果展示
 
-![](https://wqby-1304194722.cos.ap-nanjing.myqcloud.com/img/image-20231103125259806.png)
+<img src="https://wqby-1304194722.cos.ap-nanjing.myqcloud.com/img/image-20231103125259806.png"/>
 
-![](https://wqby-1304194722.cos.ap-nanjing.myqcloud.com/img/image-20231103125214572.png)
+<img src="https://wqby-1304194722.cos.ap-nanjing.myqcloud.com/img/image-20231103125214572.png"/>
 
