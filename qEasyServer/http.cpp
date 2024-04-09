@@ -72,8 +72,11 @@ bool http::read_once()
 	int bytes_read = 0;
 	while (true)
 	{
-		//printf("%s\n", m_read_buf);
+		
 		bytes_read = recv(m_sockfd, m_read_buf + m_read_idx, READ_BUFFER_SIZE - m_read_idx, 0);
+
+		printf("%s\n", m_read_buf);
+
 		if (bytes_read == -1)
 		{
 			if (errno == EAGAIN || errno == EWOULDBLOCK) //read finished
@@ -388,14 +391,11 @@ http::HTTP_CODE http::do_request()
 			//这个比较复杂，可能涉及文件传输，后面遇到再加
 		}
 		if (strncmp(m_content_type, "application/json", 16) == 0) {
-			QJsonObject * jsonObject = QJsonObject::parseObject(m_string);
-
-			QJsonChild* temp = jsonObject->m_jsonChild;
-			while (temp != NULL)
+			qJsonObject jsonObject = qJson::parseJsonObject(m_string);
+			std::vector<keyVal> allKeyVal = jsonObject.getAllKeyVal();
+			for (int i = 0; i < allKeyVal.size(); i++)
 			{
-				//printf("json key:%s val:%s\n", temp->key, temp->valStr);
-				RequestParams.insert(std::pair<std::string, std::string>(temp->key, temp->valStr)); //这里只支持一级jsonObject
-				temp = temp->next;
+				RequestParams.insert(std::pair<std::string, std::string>(allKeyVal[i].key, allKeyVal[i].val));
 			}
 		}
 	}

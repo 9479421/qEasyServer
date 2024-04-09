@@ -73,7 +73,7 @@ bool WebServer::eventListen(int port)
 	//epollfd
 	epollfd = epoll_create(5);
 	
-	Utils::addfd(epollfd, listenfd,false, 1);
+	Utils::addfd(epollfd, listenfd, false, 1);
 	//pipefd
 	socketpair(PF_UNIX, SOCK_STREAM, 0, pipefd);
 	
@@ -102,7 +102,7 @@ bool WebServer::eventLoop()
 	bool stop_server = false;
 	while (!stop_server)
 	{
-		int number = epoll_wait(epollfd, events, 10000, -1);
+		int number = epoll_wait(epollfd, events, MAX_EVENT_NUMBER, -1);
 		for (int i = 0; i < number; i++)
 		{
 			int sockfd = events[i].data.fd;

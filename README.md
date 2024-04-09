@@ -1,5 +1,5 @@
 <div align="center">
-    <h1> QEasyServer </h1>
+    <h1>QEasyServer</h1>
 </div>
 
 

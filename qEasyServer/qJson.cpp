@@ -1,123 +1,419 @@
 #include "qJson.h"
+#include <stdarg.h>
+#include<vector>
 
-QJsonObject* QJsonObject::parseObject(char* str)
-{
-	QJsonObject* retJsonObject = new QJsonObject();
 
-	QJsonChild** jsonChild = &retJsonObject->m_jsonChild;
-	if (str[0] == '{' && str[strlen(str) - 1] == '}')
+
+std::string trim(const std::string& str) {
+	// ÕÒµ½µÚÒ»¸ö²»ÊÇ¿Õ¸ñµÄ×Ö·ûµÄÎ»ÖÃ
+	auto start = str.find_first_not_of(' ');
+	// Èç¹û×Ö·û´®È«ÊÇ¿Õ¸ñ£¬·µ»ØÒ»¸ö¿Õ×Ö·û´®
+	if (start == std::string::npos)
+		return "";
+
+	// ÕÒµ½×îºóÒ»¸ö²»ÊÇ¿Õ¸ñµÄ×Ö·ûµÄÎ»ÖÃ
+	auto end = str.find_last_not_of(' ');
+
+	// ·µ»Ø´Ó¿ªÊ¼µ½½áÊøÎ»ÖÃµÄ×Ó×Ö·û´®
+	return str.substr(start, end - start + 1);
+}
+
+int findFirstNotOf(const std::string& str, char ch...) {
+	va_list chList;
+	va_start(chList, ch);
+
+	std::vector<char> chVector;
+
+
+	int nArgVal = 0;
+	for (;;)
 	{
-		//å»é™¤é¦–å°¾çš„æ‹¬å·
-		str[strlen(str) - 1] = '\0';
-		str++;
-		while (true) {
-			bool flag = false;
-			char* des = NULL;
-			//åˆ†å‰²,
-			char* temp = strchr(str, ',');
-			if (temp == NULL)
+		nArgVal = va_arg(chList, char);
+		if (nArgVal == 0)
+		{
+			break;
+		}
+		else {
+			chVector.push_back(nArgVal);
+		}
+
+	}
+
+	va_end(chList);
+
+	for (int i = 0; i < str.size(); i++)
+	{
+		bool flag = false;
+		for (int j = 0; j < chVector.size(); j++)
+		{
+			if (chVector[j] == str[i]) //ÓĞÈÎºÎÒ»¸öÏàµÈµÄ£¬¶¼²»ÄÜËã
 			{
-				//strå°±ç­‰äºstræœ¬èº«
 				flag = true;
-				des = strdup(str);
 			}
-			else {
-				*temp++ = '\0';
-				//æ­¤æ—¶strç­‰äºè¦è§£æçš„å€¼
-				des = strdup(str);
-				str = temp;
-			}
-			char* val = strpbrk(des, ":");
-			QJsonObject* valObj = NULL;
-			if (val)
-			{
-				int type = STRING;
-				*val++ = '\0';
-				char* key = des;
-				//å»é™¤keyçš„åŒå¼•å·
-				key[strlen(key) - 1] = '\0';
-				key++;
-				//å¦‚æœæ˜¯æ–‡æœ¬å‹å»é™¤åŒå¼•å·
-				if (val[0] == '"' && val[strlen(val) - 1] == '"')
-				{
-					type = STRING;
-					val[strlen(val) - 1] = '\0';
-					val++;
-					//printf("key: %s val: %s\n", key, val);
-				}
-				if (val[0] == '{' && val[strlen(val) - 1] == '}')
-				{
-					type = JSONOBJECT;
-					//printf("jsonobject: %s\n", val);
-					valObj = QJsonObject::parseObject(val);
-					//printf("after jsonobject: %s\n", val);
-				}
-				if (*jsonChild == NULL) //è¯´æ˜æ˜¯ç¬¬ä¸€ä¸ªæˆå‘˜
-				{
-					*jsonChild = new QJsonChild();
-					(*jsonChild)->key = key;
-					if (type == STRING)
-					{
-						(*jsonChild)->type = STRING;
-						(*jsonChild)->valStr = val;
-					}
-					else if (type == JSONOBJECT) {
-						(*jsonChild)->type = JSONOBJECT;
-						(*jsonChild)->valObj = valObj;
-					}
-				}
-				else {
-					QJsonChild* tail = *jsonChild;
-					while (tail->next != NULL)
-					{
-						tail = tail->next;
-					}
-					tail->next = new QJsonChild();
-					tail->next->key = key;
-					if (type == STRING)
-					{
-						tail->next->type = STRING;
-						tail->next->valStr = val;
-					}
-					else if (type == JSONOBJECT) {
-						tail->next->type = JSONOBJECT;
-						tail->next->valObj = valObj;
-					}
-				}
-			}
-			if (flag)
+		}
+		if (flag == false)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+bool isDigit(std::string str) {
+	if (str[0] == '.' || str[str.size() - 1] == '.')
+	{
+		return false;
+	}
+	for (size_t i = 0; i < str.size(); i++)
+	{
+		if (!((str[i] >= '0' && str[i] <= '9') || str[i] == '.')) {
+			return false;
+		}
+	}
+	return true;
+}
+
+
+qJsonObject qJson::parseJsonObject(std::string str)
+{
+	qJsonObject* retObject = new qJsonObject();
+
+
+	str = trim(str);
+	int size = str.size();
+	if (str[0] == '{' && str[size - 1] == '}') //ÅĞ¶Ï·ûºÏ×Ö·û´®¹æ·¶
+	{
+		str = str.substr(1, size - 2); //È¥³ıÁËÊ×Î²µÄÀ¨ºÅ
+
+		bool end = false;
+		while (true)
+		{
+			if (end) //¶Áµ½ÁËjson×Ö·û´®½áÎ²
 			{
 				break;
 			}
+
+			////Ç°×ºÓĞ¶ººÅµÄÇé¿ö¼´Ê¹³öÏÖ ºóÃæÒ²»á×Ô¶¯passµô
+
+			int idx = str.find(":"); //Ö»ÒªkeyÀï²»Òª³öÏÖ:¾ÍOK
+
+			std::string front = str.substr(0, idx);
+			int yin1 = front.find_first_of('"');
+			int yin2 = front.find_last_of('"');
+			std::string key = front.substr(yin1 + 1, yin2 - (yin1 + 1));
+
+			std::string after = str.substr(idx + 1);
+			int firstCharIdx = after.find_first_not_of(' ');
+			char firstChar = after.at(firstCharIdx);
+			if (firstChar == '"') //×Ö·û´®
+			{
+				for (int i = firstCharIdx + 1; i < after.size(); i++)
+				{
+					if (after[i] == '"' && after[i - 1] != '\\')  //ÕÒµ½valueµÄ½áÎ²ÁË
+					{
+
+						std::string value = after.substr(firstCharIdx + 1, i - (firstCharIdx + 1));
+						////×Ö·û´®½áÎ²ÁË
+						str = str.substr(idx + 1 + i + 1); //+ firstCharIdx
+
+						//printf("key:%s value:%s\n", key.c_str(), value.c_str());
+						//Ğ´Èë
+						retObject->setString(key, value);
+
+
+						if (str.find_first_not_of(' ') == -1) //¶Áµ½½áÎ²ÁË
+						{
+							end = true;
+						}
+						break;
+					}
+				}
+			}
+			else if (firstChar == '{') //jsonObject
+			{
+				//Ñ°ÕÒafterµÄ½áÎ²;
+				int middle = 1, big = 0, shuangyinhao = 0;
+
+				for (int i = firstCharIdx + 1; i < after.size(); i++) {
+
+
+					if (after[i] == '"' && after[i - 1] != '\\')
+					{
+						shuangyinhao++;
+					}
+
+					if (shuangyinhao % 2 != 1)  //ËµÃ÷ÏÖÔÚ²»ÔÚ×Ö·û´®Àï
+					{
+						if (after[i] == '{')
+						{
+							middle++;
+						}
+						if (after[i] == '}')
+						{
+							middle--;
+						}
+						if (after[i] == '[')
+						{
+							big++;
+						}
+						if (after[i] == ']')
+						{
+							big--;
+						}
+					}
+					if (middle == 0 && shuangyinhao % 2 == 0 && big == 0) //ËµÃ÷Á½±ßÈ«²¿¶¼¶ÔÉÏÁË£¬Õâ¸ö¶ÔÏó½áÊøÁË
+					{
+
+						//»ñÈ¡¶ÔÏó×Ö·û´® {*****}
+						std::string objStr = after.substr(firstCharIdx, i - firstCharIdx + 1);
+						//½Ø¶Ï£¬±£ÁôºóÃæµÄÎÄ±¾
+						str = str.substr(idx + 1 + firstCharIdx + i + 1);
+						//Ğ´Èë 
+						retObject->setJsonObject(key, /*µİ¹é*/parseJsonObject(objStr/*¶ÔÏóÎÄ±¾*/)); //Í¬Ê±½«¸Ã¶ÔÏó´«µİ
+
+						if (str.find_first_not_of(' ') == -1) //¶Áµ½½áÎ²ÁË
+						{
+							end = true;
+						}
+						break;
+					}
+
+				}
+			}
+			else if (firstChar == '[') //jsonObject
+			{
+				//Ñ°ÕÒafterµÄ½áÎ²]
+				int middle = 0, big = 1, shuangyinhao = 0;
+				for (int i = firstCharIdx + 1; i < after.size(); i++) {
+					if (after[i] == '"' && after[i - 1] != '\\')
+					{
+						shuangyinhao++;
+					}
+
+					if (shuangyinhao % 2 != 1)  //ËµÃ÷ÏÖÔÚ²»ÔÚ×Ö·û´®Àï
+					{
+						if (after[i] == '{')
+						{
+							middle++;
+						}
+						if (after[i] == '}')
+						{
+							middle--;
+						}
+						if (after[i] == '[')
+						{
+							big++;
+						}
+						if (after[i] == ']')
+						{
+							big--;
+						}
+					}
+					if (middle == 0 && shuangyinhao % 2 == 0 && big == 0) //ËµÃ÷Á½±ßÈ«²¿¶¼¶ÔÉÏÁË£¬Õâ¸ö¶ÔÏó½áÊøÁË
+					{
+
+						//»ñÈ¡Êı×é×Ö·û´® [*****]
+						std::string arrStr = after.substr(firstCharIdx, i - firstCharIdx + 1);
+						//½Ø¶Ï£¬±£ÁôºóÃæµÄÎÄ±¾
+						str = str.substr(idx + 1 + firstCharIdx + i + 1);
+						//Ğ´Èë 
+						retObject->setJsonArray(key, /*µİ¹é*/parseJsonArray(arrStr/*¶ÔÏóÎÄ±¾*/)); //Í¬Ê±½«¸Ã¶ÔÏó´«µİ
+
+						if (str.find_first_not_of(' ') == -1) //¶Áµ½½áÎ²ÁË
+						{
+							end = true;
+						}
+						break;
+					}
+
+				}
+
+			}
+			else {  //ËµÃ÷ÊÇÊı×Ö»òÕßnull
+				std::string value;
+				int endIdx = after.find(',');
+				if (endIdx == -1) //ËµÃ÷ÊÇ½áÎ²ÁË
+				{
+					value = trim(after.substr(firstCharIdx));
+					endIdx = after.size() - 1; //ÉèÖÃË÷Òıµ½½áÎ²
+				}
+				else {
+					value = trim(after.substr(firstCharIdx, endIdx - firstCharIdx));
+				}
+
+				str = str.substr(idx + 1 + endIdx + 1);
+				if (value.compare("NULL") == 0 || value.compare("null") == 0) //ËµÃ÷ÖµÎªnull
+				{
+					//ÕâÖÖÇé¿ö¿ÉÒÔºöÂÔÁË
+					if (str.find_first_not_of(' ') == -1) //¶Áµ½½áÎ²ÁË
+					{
+						end = true;
+					}
+
+
+
+
+				}
+				else {
+					//ÅĞ¶ÏÊÇ·ñºÏ·¨Êı×Ö£¬Èç¹û²»ÊÇ£¬ËµÃ÷json²»ºÏ¹æ
+					if (isDigit(value))
+					{
+						retObject->setDouble(key, std::stod(value));
+						if (str.find_first_not_of(' ') == -1) //¶Áµ½½áÎ²ÁË
+						{
+							end = true;
+						}
+					}
+					else {
+						//json²»ºÏ¹æ£¬Ö±½ÓÅ×³öÒì³£
+						throw new std::exception(); //"format exception"
+					}
+				}
+
+			}
 		}
 	}
-	//printf("m_jsonChild.key:%s\n", retJsonObject->m_jsonChild->key);
-	//printf("m_jsonChild.val:%s\n", retJsonObject->m_jsonChild->valStr);
-	return retJsonObject;
+
+	return *retObject;
 }
 
-char* QJsonObject::getString(const char* key)
+qJsonArray* qJson::parseJsonArray(std::string str)
 {
-	do
+	qJsonArray* retJsonArray = new qJsonArray();
+
+
+	str = trim(str);
+	int size = str.size();
+	if (str[0] == '[' && str[size - 1] == ']') //ÅĞ¶Ï·ûºÏ×Ö·û´®¹æ·¶
 	{
-		if (strcmp(key, m_jsonChild->key) == 0)
+		str = str.substr(1, size - 2); //È¥³ıÁËÊ×Î²µÄÀ¨ºÅ
+
+
+		//ÊıÖµÀàĞÍ
+		bool end = false;
+		while (true)
 		{
-			return m_jsonChild->valStr;
+			if (end) //¶Áµ½ÁËjson×Ö·û´®½áÎ²
+			{
+				break;
+			}
+
+			int idx = findFirstNotOf(str, ' ', ',');  //µÚÒ»¸ö×ÖµÄÎ»ÖÃ
+			//ÅĞ¶ÏÊÇ×Ö·û´®ÀàĞÍ»¹ÊÇNull»¹ÊÇÊı×ÖÀàĞÍ
+			if (str.at(idx) == '"')
+			{
+				for (size_t i = idx + 1; i < str.size(); i++)
+				{
+					if (str[i] == '"' && str[i - 1] != '\\')
+					{
+						std::string value = str.substr(idx + 1, i - (idx + 1));
+						retJsonArray->addString(value);
+						str = str.substr(i + 1);
+
+						if (str.find_first_not_of(' ') == -1)
+						{
+							end = true;
+						}
+						break;
+					}
+				}
+			}
+			else if (str.at(idx) == '{') {
+				std::string value;
+
+
+				int middle = 1, big = 0, shuangyinhao = 0;
+				for (size_t i = idx + 1; i < str.size(); i++)
+				{
+					if (str[i] == '"' && str[i - 1] != '\\')
+					{
+						shuangyinhao++;
+					}
+
+					if (shuangyinhao % 2 != 1)  //ËµÃ÷ÏÖÔÚ²»ÔÚ×Ö·û´®Àï
+					{
+						if (str[i] == '{')
+						{
+							middle++;
+						}
+						if (str[i] == '}')
+						{
+							middle--;
+						}
+						if (str[i] == '[')
+						{
+							big++;
+						}
+						if (str[i] == ']')
+						{
+							big--;
+						}
+					}
+					if (middle == 0 && shuangyinhao % 2 == 0 && big == 0) //ËµÃ÷Á½±ßÈ«²¿¶¼¶ÔÉÏÁË£¬Õâ¸ö¶ÔÏó½áÊøÁË
+					{
+						std::string jsonObjectStr = str.substr(idx, i - idx + 1);
+						retJsonArray->addJsonObject(parseJsonObject(jsonObjectStr));
+
+						str = str.substr(i + 1);
+
+						if (str.find_first_not_of(' ') == -1)
+						{
+							end = true;
+						}
+
+						break;
+					}
+				}
+			}
+			else if (str.at(idx) == '[') {
+				//ÕâÖÖÇé¿ö´ıÌí¼Ó
+
+			}
+			else {
+				//Îªnull»òÕßÊı×Ö
+				std::string value;
+				int endIdx = str.find(',', idx);
+				if (endIdx == -1) //ÕÒµ½×Ö·û´®½áÎ²ÁË
+				{
+					endIdx = str.size() - 1;
+					value = trim(str.substr(idx, endIdx - idx + 1));
+				}
+				else {
+					value = trim(str.substr(idx, endIdx - idx));
+				}
+
+				//¶ÁÈ¡Öµ
+				if (value.compare("NULL") == 0 || value.compare("null") == 0) //ËµÃ÷ÖµÎªnull
+				{
+					//ÕâÖÖÇé¿ö¿ÉÒÔºöÂÔÁË
+					if (str.find_first_not_of(' ') == -1) //¶Áµ½½áÎ²ÁË
+					{
+						end = true;
+					}
+
+
+				}
+				else {
+					//ÅĞ¶ÏÊÇ·ñºÏ·¨Êı×Ö£¬Èç¹û²»ÊÇ£¬ËµÃ÷json²»ºÏ¹æ
+					if (isDigit(value))
+					{
+						retJsonArray->addDigital(std::stod(value));
+						str = str.substr(endIdx + 1);
+						if (str.find_first_not_of(' ') == -1) //¶Áµ½½áÎ²ÁË
+						{
+							end = true;
+						}
+					}
+					else {
+						//json²»ºÏ¹æ£¬Ö±½ÓÅ×³öÒì³£
+						throw std::exception(); //"format exception"
+					}
+				}
+			}
 		}
-	} while ((m_jsonChild = m_jsonChild->next) != NULL);
 
-	return NULL;
-}
+	}
 
-QJsonObject* QJsonObject::getJsonObject(const char* key)
-{
-	do
-	{
-		if (strcmp(key, m_jsonChild->key) == 0)
-		{
-			return m_jsonChild->valObj;
-		}
-	} while ((m_jsonChild = m_jsonChild->next) != NULL);
 
-	return NULL;
+	return retJsonArray;
 }

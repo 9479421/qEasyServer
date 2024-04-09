@@ -1,20 +1,135 @@
 ﻿  正在验证源
-  正在将源远程复制到“192.168.106.133”
+  正在将源远程复制到“192.168.89.129”
   正在验证体系结构
   正在验证体系结构
   正在启动远程生成
   正在编译源:
-  webserver.cpp
+  main.cpp
+F:\qEasyServer\qEasyServer\qJson.h(129,58): warning : conversion to ‘int’ from ‘double’ may alter its value [-Wfloat-conversion]
+F:\qEasyServer\qEasyServer\qJson.h(129,58): warning :      return ((obj<qJsonObject, qJsonArray*>)(it->second)).digital;
+F:\qEasyServer\qEasyServer\qJson.h(129,58): warning :             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+F:\qEasyServer\qEasyServer\qJson.h(155,58): warning : conversion to ‘float’ from ‘double’ may alter its value [-Wfloat-conversion]
+F:\qEasyServer\qEasyServer\qJson.h(155,58): warning :      return ((obj<qJsonObject, qJsonArray*>)(it->second)).digital;
+F:\qEasyServer\qEasyServer\qJson.h(155,58): warning :             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+F:\qEasyServer\qEasyServer\qJson.h(260,24): warning : conversion to ‘int’ from ‘double’ may alter its value [-Wfloat-conversion]
+F:\qEasyServer\qEasyServer\qJson.h(260,24): warning :    return maps_obj[idx].digital;
+F:\qEasyServer\qEasyServer\qJson.h(269,23): warning : conversion to ‘int’ from ‘std::vector<obj<qJsonObject, qJsonArray> >::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\qEasyServer\qEasyServer\qJson.h(269,23): warning :    return maps_obj.size();
+F:\qEasyServer\qEasyServer\qJson.h(269,23): warning :           ~~~~~~~~~~~~~^~
+F:\qEasyServer\qEasyServer\qJson.h(282,21): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.h(282,21): warning :    for (int i = 0; i < maps_obj.size(); i++) {
+F:\qEasyServer\qEasyServer\qJson.h(282,21): warning :                    ~~^~~~~~~~~~~~~~~~~
+F:\qEasyServer\qEasyServer\qJson.h(311,10): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.h(311,10): warning :     if (i != maps_obj.size() - 1)
+F:\qEasyServer\qEasyServer\qJson.h(311,10): warning :         ~~^~~~~~~~~~~~~~~~~~~~~~
 F:\qEasyServer\qEasyServer\http.h(41,1): warning : ‘typedef’ was ignored in this declaration
 F:\qEasyServer\qEasyServer\http.h(41,1): warning :  typedef struct requestInfo {
 F:\qEasyServer\qEasyServer\http.h(41,1): warning :  ^~~~~~~
-F:\qEasyServer\qEasyServer\webserver.cpp(70,28): warning : conversion to ‘uint16_t {aka short unsigned int}’ from ‘int’ may alter its value [-Wconversion]
-F:\qEasyServer\qEasyServer\webserver.cpp(70,28): warning :   addr.sin_port = htons(port);
-F:\qEasyServer\qEasyServer\webserver.cpp(70,28): warning :                             ^
-F:\qEasyServer\qEasyServer\webserver.cpp(147,19): warning : conversion to ‘int’ from ‘ssize_t {aka long int}’ may alter its value [-Wconversion]
-F:\qEasyServer\qEasyServer\webserver.cpp(147,19): warning :      int ret = recv(pipefd[0], signals, sizeof(signals), 0);
-F:\qEasyServer\qEasyServer\webserver.cpp(147,19): warning :                ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-F:\qEasyServer\qEasyServer\threadpool.h(64,25): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
-F:\qEasyServer\qEasyServer\threadpool.h(64,25): warning :   if (m_workqueue.size() >= m_max_request)
+F:\qEasyServer\qEasyServer\qJson.h(35,21): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.h(35,21): warning :    for (int i = 0; i < jsonArray->maps_obj.size(); i++) {
+F:\qEasyServer\qEasyServer\qJson.h(64,10): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.h(64,10): warning :     if (i != jsonArray->maps_obj.size() - 1)
+F:\qEasyServer\qEasyServer\qJson.h(64,10): warning :         ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  qJson.cpp
+F:\qEasyServer\qEasyServer\qJson.h(129,58): warning : conversion to ‘int’ from ‘double’ may alter its value [-Wfloat-conversion]
+F:\qEasyServer\qEasyServer\qJson.h(129,58): warning :      return ((obj<qJsonObject, qJsonArray*>)(it->second)).digital;
+F:\qEasyServer\qEasyServer\qJson.h(129,58): warning :             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+F:\qEasyServer\qEasyServer\qJson.h(155,58): warning : conversion to ‘float’ from ‘double’ may alter its value [-Wfloat-conversion]
+F:\qEasyServer\qEasyServer\qJson.h(155,58): warning :      return ((obj<qJsonObject, qJsonArray*>)(it->second)).digital;
+F:\qEasyServer\qEasyServer\qJson.h(155,58): warning :             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+F:\qEasyServer\qEasyServer\qJson.h(260,24): warning : conversion to ‘int’ from ‘double’ may alter its value [-Wfloat-conversion]
+F:\qEasyServer\qEasyServer\qJson.h(260,24): warning :    return maps_obj[idx].digital;
+F:\qEasyServer\qEasyServer\qJson.h(269,23): warning : conversion to ‘int’ from ‘std::vector<obj<qJsonObject, qJsonArray> >::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\qEasyServer\qEasyServer\qJson.h(269,23): warning :    return maps_obj.size();
+F:\qEasyServer\qEasyServer\qJson.h(269,23): warning :           ~~~~~~~~~~~~~^~
+F:\qEasyServer\qEasyServer\qJson.h(282,21): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.h(282,21): warning :    for (int i = 0; i < maps_obj.size(); i++) {
+F:\qEasyServer\qEasyServer\qJson.h(282,21): warning :                    ~~^~~~~~~~~~~~~~~~~
+F:\qEasyServer\qEasyServer\qJson.h(311,10): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.h(311,10): warning :     if (i != maps_obj.size() - 1)
+F:\qEasyServer\qEasyServer\qJson.h(311,10): warning :         ~~^~~~~~~~~~~~~~~~~~~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(37,30): warning : conversion to ‘std::vector<char>::value_type {aka char}’ from ‘int’ may alter its value [-Wconversion]
+F:\qEasyServer\qEasyServer\qJson.cpp(37,30): warning :     chVector.push_back(nArgVal);
+F:\qEasyServer\qEasyServer\qJson.cpp(37,30): warning :                               ^
+F:\qEasyServer\qEasyServer\qJson.cpp(44,20): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.cpp(44,20): warning :   for (int i = 0; i < str.size(); i++)
+F:\qEasyServer\qEasyServer\qJson.cpp(44,20): warning :                   ~~^~~~~~~~~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(47,21): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.cpp(47,21): warning :    for (int j = 0; j < chVector.size(); j++)
+F:\qEasyServer\qEasyServer\qJson.cpp(47,21): warning :                    ~~^~~~~~~~~~~~~~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(83,21): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\qEasyServer\qEasyServer\qJson.cpp(83,21): warning :   int size = str.size();
+F:\qEasyServer\qEasyServer\qJson.cpp(83,21): warning :              ~~~~~~~~^~
+F:\qEasyServer\qEasyServer\qJson.cpp(98,22): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\qEasyServer\qEasyServer\qJson.cpp(101,34): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\qEasyServer\qEasyServer\qJson.cpp(101,34): warning :     int yin1 = front.find_first_of('"');
+F:\qEasyServer\qEasyServer\qJson.cpp(101,34): warning :                ~~~~~~~~~~~~~~~~~~~^~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(102,33): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\qEasyServer\qEasyServer\qJson.cpp(102,33): warning :     int yin2 = front.find_last_of('"');
+F:\qEasyServer\qEasyServer\qJson.cpp(102,33): warning :                ~~~~~~~~~~~~~~~~~~^~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(106,46): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\qEasyServer\qEasyServer\qJson.cpp(106,46): warning :     int firstCharIdx = after.find_first_not_of(' ');
+F:\qEasyServer\qEasyServer\qJson.cpp(106,46): warning :                        ~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(110,38): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.cpp(110,38): warning :      for (int i = firstCharIdx + 1; i < after.size(); i++)
+F:\qEasyServer\qEasyServer\qJson.cpp(110,38): warning :                                     ~~^~~~~~~~~~~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(124,38): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.cpp(124,38): warning :        if (str.find_first_not_of(' ') == -1) //������β��
+F:\qEasyServer\qEasyServer\qJson.cpp(124,38): warning :            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(137,38): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.cpp(137,38): warning :      for (int i = firstCharIdx + 1; i < after.size(); i++) {
+F:\qEasyServer\qEasyServer\qJson.cpp(137,38): warning :                                     ~~^~~~~~~~~~~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(174,38): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.cpp(174,38): warning :        if (str.find_first_not_of(' ') == -1) //������β��
+F:\qEasyServer\qEasyServer\qJson.cpp(174,38): warning :            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(187,38): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.cpp(187,38): warning :      for (int i = firstCharIdx + 1; i < after.size(); i++) {
+F:\qEasyServer\qEasyServer\qJson.cpp(187,38): warning :                                     ~~^~~~~~~~~~~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(222,38): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.cpp(222,38): warning :        if (str.find_first_not_of(' ') == -1) //������β��
+F:\qEasyServer\qEasyServer\qJson.cpp(222,38): warning :            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(234,28): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\qEasyServer\qEasyServer\qJson.cpp(234,28): warning :      int endIdx = after.find(',');
+F:\qEasyServer\qEasyServer\qJson.cpp(234,28): warning :                   ~~~~~~~~~~^~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(238,28): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\qEasyServer\qEasyServer\qJson.cpp(238,28): warning :       endIdx = after.size() - 1; //������������β
+F:\qEasyServer\qEasyServer\qJson.cpp(238,28): warning :                ~~~~~~~~~~~~~^~~
+F:\qEasyServer\qEasyServer\qJson.cpp(248,37): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.cpp(248,37): warning :       if (str.find_first_not_of(' ') == -1) //������β��
+F:\qEasyServer\qEasyServer\qJson.cpp(248,37): warning :           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(262,38): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.cpp(262,38): warning :        if (str.find_first_not_of(' ') == -1) //������β��
+F:\qEasyServer\qEasyServer\qJson.cpp(262,38): warning :            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(286,21): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\qEasyServer\qEasyServer\qJson.cpp(286,21): warning :   int size = str.size();
+F:\qEasyServer\qEasyServer\qJson.cpp(286,21): warning :              ~~~~~~~~^~
+F:\qEasyServer\qEasyServer\qJson.cpp(313,38): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.cpp(313,38): warning :        if (str.find_first_not_of(' ') == -1)
+F:\qEasyServer\qEasyServer\qJson.cpp(313,38): warning :            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(359,38): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.cpp(359,38): warning :        if (str.find_first_not_of(' ') == -1)
+F:\qEasyServer\qEasyServer\qJson.cpp(359,38): warning :            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(375,26): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\qEasyServer\qEasyServer\qJson.cpp(375,26): warning :      int endIdx = str.find(',', idx);
+F:\qEasyServer\qEasyServer\qJson.cpp(375,26): warning :                   ~~~~~~~~^~~~~~~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(378,26): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\qEasyServer\qEasyServer\qJson.cpp(378,26): warning :       endIdx = str.size() - 1;
+F:\qEasyServer\qEasyServer\qJson.cpp(378,26): warning :                ~~~~~~~~~~~^~~
+F:\qEasyServer\qEasyServer\qJson.cpp(389,37): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.cpp(389,37): warning :       if (str.find_first_not_of(' ') == -1) //������β��
+F:\qEasyServer\qEasyServer\qJson.cpp(389,37): warning :           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(402,38): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.cpp(402,38): warning :        if (str.find_first_not_of(' ') == -1) //������β��
+F:\qEasyServer\qEasyServer\qJson.cpp(402,38): warning :            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+F:\qEasyServer\qEasyServer\qJson.h(35,21): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.h(35,21): warning :    for (int i = 0; i < jsonArray->maps_obj.size(); i++) {
+F:\qEasyServer\qEasyServer\qJson.h(64,10): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\qEasyServer\qEasyServer\qJson.h(64,10): warning :     if (i != jsonArray->maps_obj.size() - 1)
+F:\qEasyServer\qEasyServer\qJson.h(64,10): warning :         ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+F:\qEasyServer\qEasyServer\qJson.cpp(31,28): warning : ‘char’ is promoted to ‘int’ when passed through ‘...’
+F:\qEasyServer\qEasyServer\qJson.cpp(31,28): warning :    nArgVal = va_arg(chList, char);
+F:\qEasyServer\qEasyServer\qJson.cpp(31,28): warning :                             ^
+F:\qEasyServer\qEasyServer\qJson.cpp(31,28): message : (so you should pass ‘int’ not ‘char’ to ‘va_arg’)
+F:\qEasyServer\qEasyServer\qJson.cpp(31,28): message : if this code is reached, the program will abort
   正在链接对象
   qEasyServer.vcxproj -> F:\qEasyServer\qEasyServer\bin\x64\Debug\qEasyServer.out
