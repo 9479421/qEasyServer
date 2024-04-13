@@ -1,7 +1,4 @@
 #include "qJson.h"
-#include <stdarg.h>
-#include<vector>
-
 
 
 std::string trim(const std::string& str) {
@@ -114,7 +111,7 @@ qJsonObject qJson::parseJsonObject(std::string str)
 
 						std::string value = after.substr(firstCharIdx + 1, i - (firstCharIdx + 1));
 						////字符串结尾了
-						str = str.substr(idx + 1 + i + 1); //+ firstCharIdx
+						str = str.substr(idx + 1 + i + 1);  // + firstCharIdx
 
 						//printf("key:%s value:%s\n", key.c_str(), value.c_str());
 						//写入
@@ -266,7 +263,7 @@ qJsonObject qJson::parseJsonObject(std::string str)
 					}
 					else {
 						//json不合规，直接抛出异常
-						throw new std::exception(); //"format exception"
+						throw std::exception();
 					}
 				}
 
@@ -277,9 +274,9 @@ qJsonObject qJson::parseJsonObject(std::string str)
 	return *retObject;
 }
 
-qJsonArray* qJson::parseJsonArray(std::string str)
+qJsonArray qJson::parseJsonArray(std::string str)
 {
-	qJsonArray* retJsonArray = new qJsonArray();
+	qJsonArray retJsonArray;
 
 
 	str = trim(str);
@@ -307,7 +304,7 @@ qJsonArray* qJson::parseJsonArray(std::string str)
 					if (str[i] == '"' && str[i - 1] != '\\')
 					{
 						std::string value = str.substr(idx + 1, i - (idx + 1));
-						retJsonArray->addString(value);
+						retJsonArray.addString(value);
 						str = str.substr(i + 1);
 
 						if (str.find_first_not_of(' ') == -1)
@@ -352,7 +349,7 @@ qJsonArray* qJson::parseJsonArray(std::string str)
 					if (middle == 0 && shuangyinhao % 2 == 0 && big == 0) //说明两边全部都对上了，这个对象结束了
 					{
 						std::string jsonObjectStr = str.substr(idx, i - idx + 1);
-						retJsonArray->addJsonObject(parseJsonObject(jsonObjectStr));
+						retJsonArray.addJsonObject(parseJsonObject(jsonObjectStr));
 
 						str = str.substr(i + 1);
 
@@ -397,7 +394,7 @@ qJsonArray* qJson::parseJsonArray(std::string str)
 					//判断是否合法数字，如果不是，说明json不合规
 					if (isDigit(value))
 					{
-						retJsonArray->addDigital(std::stod(value));
+						retJsonArray.addDigital(std::stod(value));
 						str = str.substr(endIdx + 1);
 						if (str.find_first_not_of(' ') == -1) //读到结尾了
 						{
@@ -406,7 +403,7 @@ qJsonArray* qJson::parseJsonArray(std::string str)
 					}
 					else {
 						//json不合规，直接抛出异常
-						throw std::exception(); //"format exception"
+						throw std::exception();
 					}
 				}
 			}
@@ -416,4 +413,256 @@ qJsonArray* qJson::parseJsonArray(std::string str)
 
 
 	return retJsonArray;
+}
+
+std::string qJsonObject::getString(std::string key)
+{
+	for (std::map<std::string, obj<qJsonObject, qJsonArray>>::iterator it = maps_obj.begin(); it != maps_obj.end(); ++it) {
+		if (key.compare(it->first) == 0)
+		{
+			return ((obj<qJsonObject, qJsonArray>)(it->second)).string;
+		}
+	}
+	return "";
+}
+
+void qJsonObject::setString(std::string key, std::string value)
+{
+	maps_obj.insert(std::make_pair(key, obj<qJsonObject, qJsonArray>(0, value, -1, qJsonObject(), qJsonArray())));
+}
+
+qJsonObject qJsonObject::getJsonObject(std::string key)
+{
+	for (std::map<std::string, obj<qJsonObject, qJsonArray>>::iterator it = maps_obj.begin(); it != maps_obj.end(); ++it) {
+		if (key.compare(it->first) == 0)
+		{
+			return ((obj<qJsonObject, qJsonArray>)(it->second)).jsonObject;
+		}
+	}
+	return qJsonObject();
+}
+
+void qJsonObject::setJsonObject(std::string key, qJsonObject value)
+{
+	maps_obj.insert(std::make_pair(key, obj<qJsonObject, qJsonArray>(2, "", -1, value, qJsonArray())));
+}
+
+int qJsonObject::getInt(std::string key)
+{
+	for (std::map<std::string, obj<qJsonObject, qJsonArray>>::iterator it = maps_obj.begin(); it != maps_obj.end(); ++it) {
+		if (key.compare(it->first) == 0)
+		{
+			return ((obj<qJsonObject, qJsonArray>)(it->second)).digital;
+		}
+	}
+	return -1;
+}
+
+void qJsonObject::setInt(std::string key, int value)
+{
+	maps_obj.insert(std::make_pair(key, obj<qJsonObject, qJsonArray>(1, "", value, qJsonObject(), qJsonArray())));
+}
+
+double qJsonObject::getDouble(std::string key)
+{
+	for (std::map<std::string, obj<qJsonObject, qJsonArray>>::iterator it = maps_obj.begin(); it != maps_obj.end(); ++it) {
+		if (key.compare(it->first) == 0)
+		{
+			return ((obj<qJsonObject, qJsonArray>)(it->second)).digital;
+		}
+	}
+	return -1;
+}
+
+void qJsonObject::setDouble(std::string key, double value)
+{
+	maps_obj.insert(std::make_pair(key, obj<qJsonObject, qJsonArray>(1, "", value, qJsonObject(), qJsonArray())));
+}
+
+float qJsonObject::getFloat(std::string key)
+{
+	for (std::map<std::string, obj<qJsonObject, qJsonArray>>::iterator it = maps_obj.begin(); it != maps_obj.end(); ++it) {
+		if (key.compare(it->first) == 0)
+		{
+			return ((obj<qJsonObject, qJsonArray>)(it->second)).digital;
+		}
+	}
+	return -1;
+}
+
+void qJsonObject::setFloat(std::string key, float value)
+{
+	maps_obj.insert(std::make_pair(key, obj<qJsonObject, qJsonArray>(1, "", value, qJsonObject(), qJsonArray())));
+}
+
+void qJsonObject::setJsonArray(std::string key, qJsonArray value)
+{
+	maps_obj.insert(std::make_pair(key, obj<qJsonObject, qJsonArray>(3, "", -1, qJsonObject(), value)));
+}
+
+qJsonArray qJsonObject::getJsonArray(std::string key)
+{
+	for (std::map<std::string, obj<qJsonObject, qJsonArray>>::iterator it = maps_obj.begin(); it != maps_obj.end(); ++it) {
+		if (key.compare(it->first) == 0)
+		{
+			return ((obj<qJsonObject, qJsonArray>)(it->second)).jsonArray;
+		}
+	}
+	return qJsonArray();
+}
+
+std::string qJsonObject::toString()
+{
+	std::stringstream ssm;
+	ssm << "{";
+	for (std::map<std::string, obj<qJsonObject, qJsonArray>>::iterator it = maps_obj.begin(); it != maps_obj.end(); ) {
+		ssm << "\"" << it->first << "\":";
+
+		int type = ((obj<qJsonObject, qJsonArray>)(it->second)).type;
+		if (type == 0)
+		{
+			ssm << "\"" << ((obj<qJsonObject, qJsonArray>)(it->second)).string << "\"";
+		}
+		if (type == 1)
+		{
+			double digital = ((obj<qJsonObject, qJsonArray>)(it->second)).digital;
+			int integer = static_cast<int>(digital);
+			if (digital == integer)
+			{
+				ssm << integer;
+			}
+			else {
+				ssm << digital;
+			}
+
+		}
+		if (type == 2)
+		{
+			ssm << ((obj<qJsonObject, qJsonArray>)(it->second)).jsonObject.toString();
+		}
+		if (type == 3)
+		{
+			ssm << ((obj<qJsonObject, qJsonArray>)(it->second)).jsonArray.toString();
+			/*	qJsonArray* a = ((obj<qJsonObject, qJsonArray*>)(it->second)).jsonArray;*/
+				//printf("%s",it->second.JsonArrayToString().c_str());
+			//ssm << it->second.JsonArrayToString();
+		}
+
+		if (++it != maps_obj.end())
+		{
+			ssm << ",";
+		}
+	}
+
+	ssm << "}";
+
+	return ssm.str();
+}
+
+std::vector<keyVal> qJsonObject::getAllKeyVal()
+{
+	{
+		std::vector<keyVal> retVector;
+		for (std::map<std::string, obj<qJsonObject, qJsonArray>>::iterator it = maps_obj.begin(); it != maps_obj.end(); it++)
+		{
+			if (it->second.type == 0)
+			{
+				retVector.push_back(keyVal(it->first, it->second.string));
+			}
+			else if (it->second.type == 1)
+			{
+				retVector.push_back(keyVal(it->first, std::to_string(it->second.digital)));
+			}
+
+		}
+		return retVector;
+	}
+}
+
+void qJsonArray::addJsonObject(qJsonObject jsonObject)
+{
+	maps_obj.push_back(obj<qJsonObject, qJsonArray>(2, "", -1, jsonObject, qJsonArray()));
+}
+
+qJsonObject qJsonArray::getJsonObject(int idx)
+{
+	return maps_obj[idx].jsonObject;
+}
+
+std::string qJsonArray::getString(int idx)
+{
+	return maps_obj[idx].string;
+}
+
+int qJsonArray::getInt(int idx)
+{
+	return maps_obj[idx].digital;
+}
+
+double qJsonArray::getDouble(int idx)
+{
+	return maps_obj[idx].digital;
+}
+
+double qJsonArray::getFloat(int idx)
+{
+	return maps_obj[idx].digital;
+}
+
+int qJsonArray::size()
+{
+	return maps_obj.size();
+}
+void qJsonArray::addString(std::string str)
+{
+	maps_obj.push_back(obj<qJsonObject, qJsonArray>(0, str, -1, qJsonObject(), qJsonArray())); //置入字符串
+}
+
+void qJsonArray::addDigital(double value)
+{
+	maps_obj.push_back(obj<qJsonObject, qJsonArray>(1, "", value, qJsonObject(), qJsonArray())); //置入字符串
+}
+
+std::string qJsonArray::toString()
+{
+	std::stringstream ssm;
+	ssm << "[";
+	for (int i = 0; i < maps_obj.size(); i++) {
+
+		int type = maps_obj[i].type;
+		if (type == 0)
+		{
+			ssm << "\"" << maps_obj[i].string << "\"";
+		}
+		if (type == 1)
+		{
+			double digital = maps_obj[i].digital;
+			int integer = static_cast<int>(digital);
+			if (digital == integer)
+			{
+				ssm << integer;
+			}
+			else {
+				ssm << digital;
+			}
+
+		}
+		if (type == 2)
+		{
+			ssm << maps_obj[i].jsonObject.toString();
+		}
+		if (type == 3)
+		{
+			ssm << maps_obj[i].jsonArray.toString();
+		}
+
+		if (i != maps_obj.size() - 1)
+		{
+			ssm << ",";
+		}
+	}
+	ssm << "]";
+
+
+	return ssm.str();
 }
