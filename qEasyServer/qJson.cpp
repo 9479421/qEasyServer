@@ -16,17 +16,17 @@ std::string trim(const std::string& str) {
 }
 
 int findFirstNotOf(const std::string& str, char ch...) {
+	std::vector<char> chVector;
+	chVector.push_back(ch);
+
 	va_list chList;
 	va_start(chList, ch);
 
-	std::vector<char> chVector;
-
-
-	int nArgVal = 0;
+	char nArgVal;
 	for (;;)
 	{
 		nArgVal = va_arg(chList, char);
-		if (nArgVal == 0)
+		if (nArgVal == '\0') //结束标志
 		{
 			break;
 		}
@@ -63,6 +63,9 @@ bool isDigit(std::string str) {
 	}
 	for (size_t i = 0; i < str.size(); i++)
 	{
+		if (i == 0 && str[i] == '-' && str.size() > 1) {
+			continue;
+		}
 		if (!((str[i] >= '0' && str[i] <= '9') || str[i] == '.')) {
 			return false;
 		}
@@ -73,7 +76,7 @@ bool isDigit(std::string str) {
 
 qJsonObject qJson::parseJsonObject(std::string str)
 {
-	qJsonObject* retObject = new qJsonObject();
+	qJsonObject retObject;
 
 
 	str = trim(str);
@@ -115,7 +118,7 @@ qJsonObject qJson::parseJsonObject(std::string str)
 
 						//printf("key:%s value:%s\n", key.c_str(), value.c_str());
 						//写入
-						retObject->setString(key, value);
+						retObject.setString(key, value);
 
 
 						if (str.find_first_not_of(' ') == -1) //读到结尾了
@@ -166,7 +169,7 @@ qJsonObject qJson::parseJsonObject(std::string str)
 						//截断，保留后面的文本
 						str = str.substr(idx + 1 + firstCharIdx + i + 1);
 						//写入 
-						retObject->setJsonObject(key, /*递归*/parseJsonObject(objStr/*对象文本*/)); //同时将该对象传递
+						retObject.setJsonObject(key, /*递归*/parseJsonObject(objStr/*对象文本*/)); //同时将该对象传递
 
 						if (str.find_first_not_of(' ') == -1) //读到结尾了
 						{
@@ -214,7 +217,7 @@ qJsonObject qJson::parseJsonObject(std::string str)
 						//截断，保留后面的文本
 						str = str.substr(idx + 1 + firstCharIdx + i + 1);
 						//写入 
-						retObject->setJsonArray(key, /*递归*/parseJsonArray(arrStr/*对象文本*/)); //同时将该对象传递
+						retObject.setJsonArray(key, /*递归*/parseJsonArray(arrStr/*对象文本*/)); //同时将该对象传递
 
 						if (str.find_first_not_of(' ') == -1) //读到结尾了
 						{
@@ -226,7 +229,7 @@ qJsonObject qJson::parseJsonObject(std::string str)
 				}
 
 			}
-			else {  //说明是数字或者null
+			else {  //说明是数字或者null或者Bool
 				std::string value;
 				int endIdx = after.find(',');
 				if (endIdx == -1) //说明是结尾了
@@ -242,36 +245,32 @@ qJsonObject qJson::parseJsonObject(std::string str)
 				if (value.compare("NULL") == 0 || value.compare("null") == 0) //说明值为null
 				{
 					//这种情况可以忽略了
-					if (str.find_first_not_of(' ') == -1) //读到结尾了
-					{
-						end = true;
-					}
+				}
+				else if (value.compare("true") == 0 || value.compare("TRUE") == 0 || value.compare("false") == 0 || value.compare("FALSE") == 0) {
 
-
-
-
+					retObject.setBool(key, (value.compare("true") == 0 || value.compare("TRUE") == 0) ? true : false);
 				}
 				else {
 					//判断是否合法数字，如果不是，说明json不合规
 					if (isDigit(value))
 					{
-						retObject->setDouble(key, std::stod(value));
-						if (str.find_first_not_of(' ') == -1) //读到结尾了
-						{
-							end = true;
-						}
+						retObject.setDouble(key, std::stod(value));
 					}
 					else {
 						//json不合规，直接抛出异常
-						throw std::exception();
+						throw std::exception("format exception");
 					}
 				}
 
+				if (str.find_first_not_of(' ') == -1) //读到结尾了
+				{
+					end = true;
+				}
 			}
 		}
 	}
 
-	return *retObject;
+	return retObject;
 }
 
 qJsonArray qJson::parseJsonArray(std::string str)
@@ -295,7 +294,7 @@ qJsonArray qJson::parseJsonArray(std::string str)
 				break;
 			}
 
-			int idx = findFirstNotOf(str, ' ', ',');  //第一个字的位置
+			int idx = findFirstNotOf(str, ' ', ',', '\0');  //第一个字的位置
 			//判断是字符串类型还是Null还是数字类型
 			if (str.at(idx) == '"')
 			{
@@ -379,32 +378,31 @@ qJsonArray qJson::parseJsonArray(std::string str)
 					value = trim(str.substr(idx, endIdx - idx));
 				}
 
+				str = str.substr(endIdx + 1);
+
 				//读取值
 				if (value.compare("NULL") == 0 || value.compare("null") == 0) //说明值为null
 				{
 					//这种情况可以忽略了
-					if (str.find_first_not_of(' ') == -1) //读到结尾了
-					{
-						end = true;
-					}
-
-
+				}
+				else if (value.compare("true") == 0 || value.compare("TRUE") == 0 || value.compare("false") == 0 || value.compare("FALSE") == 0) {
+					retJsonArray.addBool((value.compare("true") == 0 || value.compare("TRUE") == 0) ? true : false);
 				}
 				else {
 					//判断是否合法数字，如果不是，说明json不合规
 					if (isDigit(value))
 					{
 						retJsonArray.addDigital(std::stod(value));
-						str = str.substr(endIdx + 1);
-						if (str.find_first_not_of(' ') == -1) //读到结尾了
-						{
-							end = true;
-						}
 					}
 					else {
 						//json不合规，直接抛出异常
-						throw std::exception();
+						throw std::exception("format exception");
 					}
+				}
+
+				if (str.find_first_not_of(' ') == -1) //读到结尾了
+				{
+					end = true;
 				}
 			}
 		}
@@ -511,6 +509,22 @@ qJsonArray qJsonObject::getJsonArray(std::string key)
 	return qJsonArray();
 }
 
+bool qJsonObject::getBool(std::string key)
+{
+	for (std::map<std::string, obj<qJsonObject, qJsonArray>>::iterator it = maps_obj.begin(); it != maps_obj.end(); ++it) {
+		if (key.compare(it->first) == 0)
+		{
+			return ((obj<qJsonObject, qJsonArray>)(it->second)).digital;
+		}
+	}
+	return false;
+}
+
+void qJsonObject::setBool(std::string key, bool value)
+{
+	maps_obj.insert(std::make_pair(key, obj<qJsonObject, qJsonArray>(4, "", value, qJsonObject(), qJsonArray())));
+}
+
 std::string qJsonObject::toString()
 {
 	std::stringstream ssm;
@@ -543,10 +557,12 @@ std::string qJsonObject::toString()
 		if (type == 3)
 		{
 			ssm << ((obj<qJsonObject, qJsonArray>)(it->second)).jsonArray.toString();
-			/*	qJsonArray* a = ((obj<qJsonObject, qJsonArray*>)(it->second)).jsonArray;*/
-				//printf("%s",it->second.JsonArrayToString().c_str());
-			//ssm << it->second.JsonArrayToString();
 		}
+		if (type == 4)
+		{
+			ssm << (((obj<qJsonObject, qJsonArray>)(it->second)).digital ? "true" : "false");
+		}
+
 
 		if (++it != maps_obj.end())
 		{
@@ -557,26 +573,6 @@ std::string qJsonObject::toString()
 	ssm << "}";
 
 	return ssm.str();
-}
-
-std::vector<keyVal> qJsonObject::getAllKeyVal()
-{
-	{
-		std::vector<keyVal> retVector;
-		for (std::map<std::string, obj<qJsonObject, qJsonArray>>::iterator it = maps_obj.begin(); it != maps_obj.end(); it++)
-		{
-			if (it->second.type == 0)
-			{
-				retVector.push_back(keyVal(it->first, it->second.string));
-			}
-			else if (it->second.type == 1)
-			{
-				retVector.push_back(keyVal(it->first, std::to_string(it->second.digital)));
-			}
-
-		}
-		return retVector;
-	}
 }
 
 void qJsonArray::addJsonObject(qJsonObject jsonObject)
@@ -609,6 +605,11 @@ double qJsonArray::getFloat(int idx)
 	return maps_obj[idx].digital;
 }
 
+bool qJsonArray::getBool(int idx)
+{
+	return maps_obj[idx].digital;
+}
+
 int qJsonArray::size()
 {
 	return maps_obj.size();
@@ -620,7 +621,12 @@ void qJsonArray::addString(std::string str)
 
 void qJsonArray::addDigital(double value)
 {
-	maps_obj.push_back(obj<qJsonObject, qJsonArray>(1, "", value, qJsonObject(), qJsonArray())); //置入字符串
+	maps_obj.push_back(obj<qJsonObject, qJsonArray>(1, "", value, qJsonObject(), qJsonArray()));
+}
+
+void qJsonArray::addBool(bool value)
+{
+	maps_obj.push_back(obj<qJsonObject, qJsonArray>(4, "", value, qJsonObject(), qJsonArray()));
 }
 
 std::string qJsonArray::toString()
@@ -654,6 +660,10 @@ std::string qJsonArray::toString()
 		if (type == 3)
 		{
 			ssm << maps_obj[i].jsonArray.toString();
+		}
+		if (type == 4)
+		{
+			ssm << (maps_obj[i].digital ? "true" : "false");
 		}
 
 		if (i != maps_obj.size() - 1)
